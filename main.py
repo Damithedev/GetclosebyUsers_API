@@ -22,6 +22,7 @@ async def root():
 @app.get("/nearby")
 def get_nearby_coordinates(longitude: float, latitude: float):
     nearby_users = []
+    #rmm
     docs = doc_ref.get()
     for doc in docs:
         user = doc.to_dict()
