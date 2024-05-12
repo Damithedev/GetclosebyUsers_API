@@ -19,6 +19,9 @@ async def root():
 def get_nearby_coordinates(longitude: float, latitude: float, uid:str):
     nearby_users = []
     tokens = []
+    username = ""
+    userpic = ""
+
     #rmm
     docs = doc_ref.get()
     for doc in docs:
@@ -28,6 +31,8 @@ def get_nearby_coordinates(longitude: float, latitude: float, uid:str):
         user_lat = user['lat']
         user_lng = user['lng']
         if user_id == uid:
+            username = user['firstname']
+            userpic = user['profile picture']
             continue
         distance = geodesic((latitude, longitude), (user_lat, user_lng)).kilometers
 
@@ -36,5 +41,5 @@ def get_nearby_coordinates(longitude: float, latitude: float, uid:str):
             user['distance']= distance
             nearby_users.append(user)
     for nearby_user in nearby_users:
-        send_push_notification(nearby_user['FCM'], f'{nearby_user["firstname"]} needs Help', f'{nearby_user["distance"]} Miles away', imgurl=user['profile picture'])
+        send_push_notification(nearby_user['FCM'], f'{username} needs Help', f'{nearby_user["distance"]} Miles away', imgurl=userpic)
     return nearby_users
