@@ -10,11 +10,15 @@ app = firebase_admin.initialize_app(cred)
 store = firestore.client()
 doc_ref = store.collection(u'users')
 
-def send_push_notification(token, title, body, imgurl):
+def send_push_notification(token, title, body, imgurl,uid):
     # Create a message
     message = messaging.Message(
-        notification=messaging.Notification(title=title, body=body, image=imgurl),
+        notification=messaging.Notification(title=title, body=body, image=imgurl,),
         token=token,
+        data= {
+            "route" : "Responder",
+            "uid": uid
+        }
     )
 
     # Send the message
