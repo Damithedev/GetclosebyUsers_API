@@ -42,5 +42,5 @@ def get_nearby_coordinates(longitude: float, latitude: float, uid:str):
             if user['FCM'] is not None:
                 nearby_users.append(user)
     for nearby_user in nearby_users:
-        send_push_notification(nearby_user['FCM'], f'{username} needs Help', f'{nearby_user["distance"]} Miles away', imgurl=userpic, uid= uid)
+        send_push_notification(nearby_user['FCM'], f'{username} needs Help', f'{nearby_user["distance"]} Miles away', imgurl=userpic, uid= uid, distance= nearby_user["distance"])
     return nearby_users
