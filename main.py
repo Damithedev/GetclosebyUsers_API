@@ -1,4 +1,6 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
 from database import doc_ref, send_push_notification
 import google.cloud
 from geopy.distance import geodesic
@@ -6,9 +8,25 @@ import socketio
 
 
 app = FastAPI()
-sio=socketio.AsyncServer(cors_allowed_origins='*',async_mode='asgi')
-#wrap with ASGI application
-socket_app = socketio.ASGIApp(sio,app)
+
+# Configure CORS for FastAPI
+origins = [
+    "*"
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Initialize Socket.IO server with ASGI mode and CORS allowed origins
+sio = socketio.AsyncServer(cors_allowed_origins='*', async_mode='asgi')
+
+# Wrap Socket.IO server with ASGI application
+socket_app = socketio.ASGIApp(sio, app)
 @app.get("/")
 async def root():
     try:
