@@ -76,6 +76,11 @@ async def connect(sid, env):
 async def disconnect(sid):
     print("Client Disconnected: "+" "+str(sid))
 
+@sio.on("helpneeded")
+async def  help(msg):
+    print(msg)
+
+
 
 
 if __name__ == '__main__':
