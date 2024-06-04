@@ -76,7 +76,7 @@ async def connect(sid, env):
 async def disconnect(sid):
     print("Client Disconnected: "+" "+str(sid))
 
-@sio.on("helpneeded")
+@sio.on("RTH")
 async def helpusers(sid, msg):
     print(msg)
 
