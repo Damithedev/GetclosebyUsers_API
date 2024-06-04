@@ -47,7 +47,7 @@ def get_nearby_coordinates(longitude: float, latitude: float, uid:str):
     docs = doc_ref.get()
     for doc in docs:
         user = doc.to_dict()
-        print(user)
+
         user_id = user['uid']
         user_lat = user['lat']
         user_lng = user['lng']
@@ -57,7 +57,7 @@ def get_nearby_coordinates(longitude: float, latitude: float, uid:str):
             continue
         distance = geodesic((latitude, longitude), (user_lat, user_lng)).kilometers
 
-        print(user_lat, user_lng)
+
         if distance <= 100:
             user['distance']= distance
             if user['FCM'] is not None:
@@ -78,7 +78,7 @@ async def disconnect(sid):
 
 @sio.on("RTH")
 async def helpusers(sid, msg):
-    print(msg)
+    print("message don enter bos")
 
 
 
