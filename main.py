@@ -1,3 +1,5 @@
+from urllib.parse import parse_qs
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -70,6 +72,11 @@ def get_nearby_coordinates(longitude: float, latitude: float, uid:str):
 
 @sio.event
 async def connect(sid, environ):
+    query_string = environ.get('QUERY_STRING', '')  # Get the query string from environ
+    query_params = parse_qs(query_string)  # Parse the query string into a dictionary
+    user_id = query_params.get('userId', [None])[0]
+    await sio.enter_room(sid, user_id)
+    print(user_id)
     print("New Client Connected: ", sid)
 
 
@@ -81,8 +88,9 @@ async def disconnect(sid):
 
 @sio.event
 async def RTH(sid, msg):
-
-    await sio.emit("RTH", msg, to= clients[msg.id])
+    print(msg
+          )
+    await sio.emit("RTH", msg, room= msg.get('helpuid'))
 
 
 if __name__ == '__main__':
