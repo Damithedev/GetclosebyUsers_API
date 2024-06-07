@@ -21,7 +21,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
+clients = []
 # Initialize Socket.IO server with ASGI mode and CORS allowed origins
 sio = socketio.AsyncServer(cors_allowed_origins='*', async_mode='asgi')
 
@@ -68,21 +68,23 @@ def get_nearby_coordinates(longitude: float, latitude: float, uid:str):
     return nearby_users
 
 
-@sio.on("connect")
-async def connect(sid, env):
-      print("New Client Connected to This id :"+" "+str(sid))
-      await sio.emit("send_msg", "Hello from Server", to='2339djjd')
-@sio.on("disconnect")
+@sio.event
+async def connect(sid, environ):
+    print("New Client Connected: ", sid)
+
+
+
+
+@sio.event
 async def disconnect(sid):
-    print("Client Disconnected: "+" "+str(sid))
+    print("Client Disconnected: ", sid)
 
-@sio.on("RTH")
-async def helpusers(sid, msg):
-    print("message don enter bos")
+@sio.event
+async def RTH(sid, msg):
 
-
+    await sio.emit("RTH", msg, to= clients[msg.id])
 
 
 if __name__ == '__main__':
     import uvicorn
-    uvicorn.run(socket_app, host='0.0.0.0', port=8000)
+    uvicorn.run(socket_app, port=7000)
