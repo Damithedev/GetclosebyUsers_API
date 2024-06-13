@@ -77,6 +77,7 @@ async def connect(sid, environ):
     user_id = query_params.get('userId', [None])[0]
     await sio.enter_room(sid, user_id)
     print(user_id)
+
     print("New Client Connected: ", sid)
 
 
@@ -88,9 +89,13 @@ async def disconnect(sid):
 
 @sio.event
 async def RTH(sid, msg):
-    print(msg
-          )
+    print(msg)
     await sio.emit("RTH", msg, room= msg.get('helpuid'))
+
+@sio.event
+async def accept(sid,msg):
+    print(msg)
+    await sio.emit("accept", msg, room=msg.get('responderuid'))
 
 
 if __name__ == '__main__':
